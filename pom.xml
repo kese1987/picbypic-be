@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.0</version>
+        <version>2.4.0</version>
     </parent>
 
     <groupId>click.erikafranci.picbypic.be</groupId>
@@ -34,5 +34,12 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <repositories>
+        <repository>
+            <id>world</id>
+            <url>http://vpn.francierika.click:9090/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
 
 </project>
