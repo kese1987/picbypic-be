@@ -24,9 +24,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       - name: Install OpenVPN
-          run: |
-            sudo apt-get update
-            sudo apt-get --assume-yes --no-install-recommends install openvpn
+        run: |
+          sudo apt-get update
+          sudo apt-get --assume-yes --no-install-recommends install openvpn
 
       - name: Setup VPN config
         run: |
