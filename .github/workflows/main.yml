@@ -24,26 +24,37 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       - name: Install OpenVPN
+          run: |
+            sudo apt-get update
+            sudo apt-get --assume-yes --no-install-recommends install openvpn
+
+      - name: Setup VPN config
         run: |
-          sudo apt update
-          sudo apt install -y openvpn openvpn-systemd-resolved
-      - name: Install OpenVPN
-        run: pwd
-      - name: Install OpenVPN
-        run: ls -a
+          echo "${{ secrets.OPENVPN_CA }}" > ca.crt
+          echo "${{ secrets.CLIENT_CERT }}" > user.crt
+          echo "${{ secrets.CLIENT_KEY }}" > user.key
+          echo "${{ secrets.OPENVPN_TLS_KEY }}" > tls.key
+
       - name: Connect VPN
-        uses: golfzaptw/action-connect-ovpn@master
-        id: connect_vpn
+        run: sudo openvpn --config ".github/vpn/config.ovpn" --log "vpn.log" --daemon
+
+      - name: Wait for a VPN connection
+        timeout-minutes: 1
+        run: until dig @10.0.0.2 vpn.francierika.lan A +time=1; do sleep 2; done
+
+      - name: Kill VPN connection
+        if: always()
+        run: |
+          sudo chmod 777 vpn.log
+          sudo killall openvpn
+
+      - name: Upload VPN logs
+        uses: actions/upload-artifact@v2
+        if: always()
         with:
-          PING_URL: 'vpn.francierika.lan'
-          FILE_OVPN: '.github/config/client.ovpn'
-          TLS_KEY: ${{ secrets.OPENVPN_TLS_KEY }}
-        env:
-          CA_CRT: ${{ secrets.OPENVPN_CA}}
-          USER_CRT: ${{ secrets.CLIENT_CERT }}
-          USER_KEY: ${{ secrets.CLIENT_KEY }}
-      - name: Check Connect VPN
-        run: echo ${{ steps.connect_vpn.outputs.STATUS }}
+          name: VPN logs
+          path: vpn.log
+
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
