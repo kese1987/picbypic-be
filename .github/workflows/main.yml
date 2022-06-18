@@ -24,22 +24,22 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       - name: Install OpenVPN
-          run: |
-            sudo apt update
-            sudo apt install -y openvpn openvpn-systemd-resolved
+        run: |
+          sudo apt update
+          sudo apt install -y openvpn openvpn-systemd-resolved
       - name: Connect VPN
-          uses: golfzaptw/action-connect-ovpn@master
-          id: connect_vpn
-          with:
-            PING_URL: 'vpn.francierika.lan'
-            FILE_OVPN: '.github/vpn/config.ovpn'
-            TLS_KEY: ${{ secrets.OPENVPN_TLS_KEY }}
-          env:
-            CA_CRT: ${{ secrets.OPENVPN_CA}}
-            USER_CRT: ${{ secrets.CLIENT_CERT }}
-            USER_KEY: ${{ secrets.CLIENT_KEY }}
+        uses: golfzaptw/action-connect-ovpn@master
+        id: connect_vpn
+        with:
+          PING_URL: 'vpn.francierika.lan'
+          FILE_OVPN: '.github/vpn/config.ovpn'
+          TLS_KEY: ${{ secrets.OPENVPN_TLS_KEY }}
+        env:
+          CA_CRT: ${{ secrets.OPENVPN_CA}}
+          USER_CRT: ${{ secrets.CLIENT_CERT }}
+          USER_KEY: ${{ secrets.CLIENT_KEY }}
       - name: Check Connect VPN
-          run: echo ${{ steps.connect_vpn.outputs.STATUS }}
+        run: echo ${{ steps.connect_vpn.outputs.STATUS }}
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
