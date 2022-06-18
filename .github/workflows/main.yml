@@ -29,6 +29,8 @@ jobs:
           sudo apt install -y openvpn openvpn-systemd-resolved
       - name: Install OpenVPN
         run: pwd
+      - name: Install OpenVPN
+        run: ls -a
       - name: Connect VPN
         uses: golfzaptw/action-connect-ovpn@master
         id: connect_vpn
