@@ -34,8 +34,8 @@ jobs:
           echo "${{ secrets.CLIENT_CERT }}" > user.crt
           echo "${{ secrets.CLIENT_KEY }}" > user.key
           echo "${{ secrets.OPENVPN_TLS_KEY }}" > tls.key
-          chmod u+r *.key
-          chmod u+r *.crt
+          chmod 400 *.key
+          chmod 400 *.crt
       - name: Connect VPN
         run: sudo openvpn --config ".github/vpn/config.ovpn" --log "vpn.log" --daemon
 
