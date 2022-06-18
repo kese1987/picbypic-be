@@ -32,7 +32,7 @@ jobs:
         id: connect_vpn
         with:
           PING_URL: 'vpn.francierika.lan'
-          FILE_OVPN: '.github/vpn/config.ovpn'
+          FILE_OVPN: './.github/vpn/config.ovpn'
           TLS_KEY: ${{ secrets.OPENVPN_TLS_KEY }}
         env:
           CA_CRT: ${{ secrets.OPENVPN_CA}}
